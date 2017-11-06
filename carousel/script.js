@@ -11,31 +11,66 @@ Carousel.prototype = {
     this.$forward = this.$ct.find('#icon-left')
     this.$next = this.$ct.find('#icon-right')
     this.$btn = this.$ct.find('.btn')
+    this.index = 0
+    this.isFinish = true
+    
+    this.$imgWidth = this.$li.width()
+    this.$imgCount = this.$li.length
     
     this.$carousel.append(this.$li.first().clone())
     this.$carousel.prepend(this.$li.last().clone())
+    this.$carousel.width(this.$imgWidth*(this.$imgCount+2))
     
-    this.$carousel.width((this.$li.length+2)*this.$li.width())
+    this.$carousel.css('left', -this.$imgWidth)
   },
   event: function(){
-    this.$forward.on('cick', function(){
-      console.log('forward')
+    var me = this
+    this.$forward.on('click', function(){
+      me.playForward(1)
     })
-    this.$next.on('cick', function(){
-      console.log('next')
+    this.$next.on('click', function(){
+      me.playNext(1)
     })
-    this.$btn.on('cick', function(){
-      console.log($(this).index)
+    this.$btn.on('click', function(){
+      var index = $(this).index()
+      if(index > me.index){
+        me.playNext(index - me.index)
+      }else{
+        me.playForward(me.index - index)
+      }
     })
   },
-  playForward: function(){
-    
+  playForward: function(len){
+    var me = this
+    this.$carousel.animate({
+      left: '+='+me.$imgWidth*len
+    }, function(){
+      me.index -= len
+      if(me.index < 0){
+        me.$carousel.css('left', -me.$imgWidth*me.$imgCount)
+        me.index = me.$imgCount - 1
+      }
+      me.setBtn()
+    })
   },
-  platNext: function(){
-    
+  playNext: function(len){
+    var me = this
+    this.$carousel.animate({
+      left: '-='+me.$imgWidth*len
+    }, function(){
+      me.index += len
+      if(me.index === me.$imgCount){
+        me.$carousel.css('left', -me.$imgWidth)
+        me.index = 0
+      }
+      me.setBtn()
+    })
+  },
+  setBtn: function(){
+    this.$btn.eq(this.index).addClass('active').siblings().removeClass('active')
   }
 }
 
 
-new Carousel($('.viewport').eq(0))
+a = new Carousel($('.viewport').eq(0))
 new Carousel($('.viewport').eq(1))

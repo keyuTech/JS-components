@@ -1,6 +1,11 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+ul {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
 }
 li {
   list-style: none;
@@ -9,10 +14,9 @@ li {
 .viewport {
   height: 320px;
   width: 480px;
-  border: 1px solid black;
   margin: 30px auto;
   position: relative;
-  background: #ccc;
+  background: transparent;
   overflow: hidden;
 }
 .icon {
@@ -69,7 +73,12 @@ li {
   display: block;
   clear: both;
 }
+.carousel {
+  position: absolute;
+  z-index: -1;
+}
 .carousel .item {
+  height: 320px;
   float: left;
 }
 .carousel:after {
