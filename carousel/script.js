@@ -1,6 +1,7 @@
 function Carousel($ct){
   this.init($ct)
   this.event()
+  this.autoPlay()
 }
 Carousel.prototype = {
   init: function($ct){
@@ -12,7 +13,7 @@ Carousel.prototype = {
     this.$next = this.$ct.find('#icon-right')
     this.$btn = this.$ct.find('.btn')
     this.index = 0
-    this.isFinish = true
+    this.isAnimate = false
     
     this.$imgWidth = this.$li.width()
     this.$imgCount = this.$li.length
@@ -42,35 +43,50 @@ Carousel.prototype = {
   },
   playForward: function(len){
     var me = this
+    if(this.isAnimate) return
+    this.isAnimate = true
     this.$carousel.animate({
       left: '+='+me.$imgWidth*len
-    }, function(){
+    }, 1000, function(){
       me.index -= len
       if(me.index < 0){
         me.$carousel.css('left', -me.$imgWidth*me.$imgCount)
         me.index = me.$imgCount - 1
       }
       me.setBtn()
+      me.isAnimate = false
     })
   },
   playNext: function(len){
+    if(this.isAnimate) return
+    this.isAnimate = true
     var me = this
     this.$carousel.animate({
       left: '-='+me.$imgWidth*len
-    }, function(){
+    }, 1000, function(){
       me.index += len
       if(me.index === me.$imgCount){
         me.$carousel.css('left', -me.$imgWidth)
         me.index = 0
       }
       me.setBtn()
+      me.isAnimate = true
     })
   },
   setBtn: function(){
     this.$btn.eq(this.index).addClass('active').siblings().removeClass('active')
+  },
+  autoPlay: function(){
+    var me = this
+    this.clock = setInterval(function(){
+      me.playNext(1)
+    }, 1000)
+  },
+  stopAuto: function(){
+    clearInterval(this.clock)
   }
 }
 
 
-a = new Carousel($('.viewport').eq(0))
-new Carousel($('.viewport').eq(1))
+var a = new Carousel($('.viewport').eq(0))
+var b =   new Carousel($('.viewport').eq(1))
