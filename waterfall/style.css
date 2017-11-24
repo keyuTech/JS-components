@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+.waterfall {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.waterfall img {
+  width: 200px;
+  position: absolute;
+  margin: 10px;
+}
