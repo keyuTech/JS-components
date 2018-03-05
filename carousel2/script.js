@@ -1,20 +1,33 @@
-$('.images > img:nth-child(1)').addClass('center')
-$('.images > img:nth-child(2)').addClass('right')
-$('.images > img:nth-child(3)').addClass('right')
-$('.images > img:nth-child(4)').addClass('right')
-$('.images > img:nth-child(5)').addClass('right')
-let index = 1
+let index
+init()
 setInterval(()=>{
-  $(`.images > img:nth-child(${calc(index)}`).removeClass('center')
-  .addClass('left')
-  .one('transitionend', (e)=>{
-    $(e.currentTarget).removeClass('left').addClass('right')
+  setLeave(getImg(index)).one('transitionend', (e)=>{
+    setEnter($(e.currentTarget))
   })
-  $(`.images > img:nth-child(${calc(index + 1)})`).removeClass('right')
-  .addClass('center')
+  setCenter(getImg(index+1))
   index += 1
 }, 2000)
 
+
+function init(){
+  index = 1
+  getImg(index).addClass('center')
+  .siblings().addClass('enter')
+}
+
+function setCenter($node){
+  return $node.removeClass('enter leave').addClass('center')
+}
+function setEnter($node){
+  return $node.removeClass('leave center').addClass('enter')
+}
+function setLeave($node){
+  return $node.removeClass('enter center').addClass('leave')
+}
+
+function getImg(index){
+  return $(`.images > img:nth-child(${calc(index)}`)
+}
 function calc(n){
   if(n > 5){
     n = n % 5

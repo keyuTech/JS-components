@@ -26,10 +26,10 @@
   transform: translateX(0);
   z-index: 1;
 }
-.images > img.left {
+.images > img.leave {
   transform: translateX(-100%);
   z-index: 1;
 }
-.images > img.right {
+.images > img.enter {
   transform: translateX(100%);
 }
